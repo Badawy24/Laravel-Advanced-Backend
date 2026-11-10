@@ -23,4 +23,7 @@ return [
     'current_password_invalid' => 'كلمة المرور الحالية غير صحيحة.',
     'invalid_order_transition' => 'انتقال حالة الطلب غير مسموح به.',
     'missing_active_reservations' => 'لا يمكن تأكيد الطلب بدون حجوزات مخزون نشطة وصالحة.',
+    'products_retrieved_successfully' => 'تم استرجاع المنتجات بنجاح.',
+    'branch_products_retrieved_successfully' => 'تم استرجاع منتجات الفرع بنجاح.',
+    'branch_not_found' => 'الفرع غير موجود أو غير نشط.',
 ];

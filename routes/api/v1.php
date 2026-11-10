@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\V1\OrderController;
+use App\Http\Controllers\Api\V1\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->name('auth.')->group(function (): void {
@@ -19,5 +20,7 @@ Route::prefix('auth')->name('auth.')->group(function (): void {
 });
 
 Route::middleware('auth:sanctum')->group(function (): void {
+    Route::get('products', [ProductController::class, 'index'])->name('products.index');
+    Route::get('branches/{branch}/products', [ProductController::class, 'branchProducts'])->name('branches.products.index');
     Route::post('orders', [OrderController::class, 'store'])->name('orders.store');
 });

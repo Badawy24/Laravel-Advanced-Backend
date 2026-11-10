@@ -23,4 +23,7 @@ return [
     'current_password_invalid' => 'The current password is incorrect.',
     'invalid_order_transition' => 'Invalid order status transition.',
     'missing_active_reservations' => 'Order cannot be confirmed without valid active stock reservations.',
+    'products_retrieved_successfully' => 'Products retrieved successfully.',
+    'branch_products_retrieved_successfully' => 'Branch products retrieved successfully.',
+    'branch_not_found' => 'Branch not found or inactive.',
 ];
