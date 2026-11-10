@@ -11,3 +11,7 @@ Artisan::command('inspire', function () {
 Schedule::command('reservations:expire')
     ->everyMinute()
     ->withoutOverlapping();
+
+Schedule::command('payments:reconcile')
+    ->everyMinute()
+    ->withoutOverlapping();

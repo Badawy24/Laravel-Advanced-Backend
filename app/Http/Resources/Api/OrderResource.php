@@ -30,6 +30,8 @@ class OrderResource extends BaseApiResource
             'currency' => $this->currency,
             'idempotency_key' => $this->idempotency_key,
             'items' => OrderItemResource::collection($this->whenLoaded('items')),
+            'status_histories' => OrderStatusHistoryResource::collection($this->whenLoaded('statusHistories')),
+            'status_history' => OrderStatusHistoryResource::collection($this->whenLoaded('statusHistories')),
             'created_at' => $this->formatIsoDateTime($this->created_at),
             'updated_at' => $this->formatIsoDateTime($this->updated_at),
         ];

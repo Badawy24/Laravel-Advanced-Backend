@@ -21,17 +21,13 @@ class ProductResource extends BaseApiResource
     {
         return [
             'id' => $this->id,
-            'category_id' => $this->category_id,
             'sku' => $this->sku,
             'name' => $this->name,
-            'description' => $this->description,
             'price' => $this->formatPrice($this->price),
             'is_active' => (bool) $this->is_active,
             'category' => $this->relationLoaded('category') && $this->category !== null
                 ? (new CategoryResource($this->category))->resolve($request)
                 : null,
-            'created_at' => $this->formatIsoDateTime($this->created_at),
-            'updated_at' => $this->formatIsoDateTime($this->updated_at),
         ];
     }
 }

@@ -15,7 +15,8 @@ The API is versioned under `/api/v1`. A minimal web route serves the default Lar
 - **Stock reservations**: TTL-based expiration (`config/inventory.php`), `ExpireStockReservation` queue job, and `reservations:expire` scheduled command.
 - **Inventory movements**: Paginated audit log (admin users only).
 - **Database seeding**: Categories, products, branches, branch inventory, sample inventory movements, users, and customers.
-- **Automated tests**: Feature tests cover auth, API key middleware, products, orders, payments, reservations, concurrency (MySQL), and inventory movements.
+- **Automated tests**: Feature tests cover auth, API key middleware, products, orders, payments, reservations, queue reliability, concurrency (MySQL), and inventory movements.
+- **Concurrency design**: See [CONCURRENCY.md](CONCURRENCY.md) for transaction boundaries, row locks, overselling prevention, and queue idempotency.
 
 ## Technologies and requirements
 
@@ -281,11 +282,13 @@ php artisan test --coverage
 | `OrderLifecycleAndCancellationTest` | Status transitions, cancellation, concurrency (MySQL) |
 | `OrderConcurrencyTest` | Concurrent reservation attempts |
 | `PaymentSimulatorTest` | Payments, idempotency, reconciliation command/job |
+| `QueueReliabilityTest` | Queue job retry, duplicate execution guards, missing-row handling |
 | `StockReservationExpirationTest` | TTL jobs, scheduler command, concurrency |
+| `OrderManagementApiTest` | Order HTTP API (show, lifecycle, cancel) |
 | `InventoryMovementApiTest` | Admin-only movement listing |
 | `ExampleTest` / `Unit/ExampleTest` | Smoke examples |
 
-**Count**: 77 test methods across the suite (excluding vendor).
+**Count**: 104 test methods across the suite (excluding vendor).
 
 Automated coverage was **not** executed in environments without a running MySQL `e_ramo_test` database; run `php artisan test --coverage` locally after DB setup for metrics.
 
