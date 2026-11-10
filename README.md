@@ -16,7 +16,6 @@ The API is versioned under `/api/v1`. A minimal web route serves the default Lar
 - **Inventory movements**: Paginated audit log (admin users only).
 - **Database seeding**: Categories, products, branches, branch inventory, sample inventory movements, users, and customers.
 - **Automated tests**: Feature tests cover auth, API key middleware, products, orders, payments, reservations, queue reliability, concurrency (MySQL), and inventory movements.
-- **Concurrency design**: See [CONCURRENCY.md](CONCURRENCY.md) for transaction boundaries, row locks, overselling prevention, and queue idempotency.
 
 ## Technologies and requirements
 
