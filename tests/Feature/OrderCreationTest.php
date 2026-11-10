@@ -467,4 +467,101 @@ class OrderCreationTest extends TestCase
         $this->assertSame(0, $inventory->reserved_quantity);
         $this->assertSame(10, $inventory->quantity);
     }
+
+    public function test_decimal_precision_for_unit_prices_line_totals_and_order_total(): void
+    {
+        $customer = Customer::factory()->create();
+        Sanctum::actingAs($customer->user);
+
+        $branch = Branch::factory()->create();
+        $product1 = Product::factory()->create(['price' => '0.10']);
+        $product2 = Product::factory()->create(['price' => '0.20']);
+        $product3 = Product::factory()->create(['price' => '19.99']);
+        $product4 = Product::factory()->create(['price' => '33.33']);
+
+        foreach ([$product1, $product2, $product3, $product4] as $product) {
+            BranchInventory::factory()->create([
+                'branch_id' => $branch->id,
+                'product_id' => $product->id,
+                'quantity' => 50,
+                'reserved_quantity' => 0,
+            ]);
+        }
+
+        $response = $this->postJson('/api/v1/orders', [
+            'branch_id' => $branch->id,
+            'items' => [
+                ['product_id' => $product1->id, 'quantity' => 1], // 0.10
+                ['product_id' => $product2->id, 'quantity' => 1], // 0.20
+                ['product_id' => $product3->id, 'quantity' => 3], // 59.97
+                ['product_id' => $product4->id, 'quantity' => 3], // 99.99
+            ],
+        ], $this->headers);
+
+        $response->assertStatus(201);
+
+        /** @var Order $order */
+        $order = Order::with('items')->firstOrFail();
+        $this->assertSame('160.26', $order->total_amount);
+
+        $itemsByProduct = $order->items->keyBy('product_id');
+
+        $this->assertSame('0.10', $itemsByProduct->get($product1->id)->unit_price);
+        $this->assertSame('0.10', $itemsByProduct->get($product1->id)->line_total);
+
+        $this->assertSame('0.20', $itemsByProduct->get($product2->id)->unit_price);
+        $this->assertSame('0.20', $itemsByProduct->get($product2->id)->line_total);
+
+        $this->assertSame('19.99', $itemsByProduct->get($product3->id)->unit_price);
+        $this->assertSame('59.97', $itemsByProduct->get($product3->id)->line_total);
+
+        $this->assertSame('33.33', $itemsByProduct->get($product4->id)->unit_price);
+        $this->assertSame('99.99', $itemsByProduct->get($product4->id)->line_total);
+    }
+
+    public function test_high_value_decimal_precision_without_float_drift(): void
+    {
+        $customer = Customer::factory()->create();
+        Sanctum::actingAs($customer->user);
+
+        $branch = Branch::factory()->create();
+        $product1 = Product::factory()->create(['price' => '9999999.99']);
+        $product2 = Product::factory()->create(['price' => '0.03']);
+
+        BranchInventory::factory()->create([
+            'branch_id' => $branch->id,
+            'product_id' => $product1->id,
+            'quantity' => 10,
+            'reserved_quantity' => 0,
+        ]);
+
+        BranchInventory::factory()->create([
+            'branch_id' => $branch->id,
+            'product_id' => $product2->id,
+            'quantity' => 10,
+            'reserved_quantity' => 0,
+        ]);
+
+        $response = $this->postJson('/api/v1/orders', [
+            'branch_id' => $branch->id,
+            'items' => [
+                ['product_id' => $product1->id, 'quantity' => 2], // 19999999.98
+                ['product_id' => $product2->id, 'quantity' => 1], // 0.03
+            ],
+        ], $this->headers);
+
+        $response->assertStatus(201);
+
+        /** @var Order $order */
+        $order = Order::with('items')->firstOrFail();
+        $this->assertSame('20000000.01', $order->total_amount);
+
+        $itemsByProduct = $order->items->keyBy('product_id');
+
+        $this->assertSame('9999999.99', $itemsByProduct->get($product1->id)->unit_price);
+        $this->assertSame('19999999.98', $itemsByProduct->get($product1->id)->line_total);
+
+        $this->assertSame('0.03', $itemsByProduct->get($product2->id)->unit_price);
+        $this->assertSame('0.03', $itemsByProduct->get($product2->id)->line_total);
+    }
 }

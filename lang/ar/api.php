@@ -21,4 +21,6 @@ return [
     'password_changed_successfully' => 'تم تغيير كلمة المرور بنجاح.',
     'profile_retrieved_successfully' => 'تم استرجاع الملف الشخصي بنجاح.',
     'current_password_invalid' => 'كلمة المرور الحالية غير صحيحة.',
+    'invalid_order_transition' => 'انتقال حالة الطلب غير مسموح به.',
+    'missing_active_reservations' => 'لا يمكن تأكيد الطلب بدون حجوزات مخزون نشطة وصالحة.',
 ];

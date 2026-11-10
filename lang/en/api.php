@@ -21,4 +21,6 @@ return [
     'password_changed_successfully' => 'Password changed successfully.',
     'profile_retrieved_successfully' => 'Profile retrieved successfully.',
     'current_password_invalid' => 'The current password is incorrect.',
+    'invalid_order_transition' => 'Invalid order status transition.',
+    'missing_active_reservations' => 'Order cannot be confirmed without valid active stock reservations.',
 ];
