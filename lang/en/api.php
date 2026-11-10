@@ -13,4 +13,12 @@ return [
     'too_many_requests' => 'Too many requests.',
     'server_error' => 'Internal server error.',
     'success' => 'Success',
+    'invalid_credentials' => 'Invalid credentials.',
+    'registered_successfully' => 'Registered successfully.',
+    'logged_in_successfully' => 'Logged in successfully.',
+    'logged_out_successfully' => 'Logged out successfully.',
+    'logged_out_all_successfully' => 'Logged out from all devices successfully.',
+    'password_changed_successfully' => 'Password changed successfully.',
+    'profile_retrieved_successfully' => 'Profile retrieved successfully.',
+    'current_password_invalid' => 'The current password is incorrect.',
 ];

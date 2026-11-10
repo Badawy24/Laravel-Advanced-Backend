@@ -13,4 +13,12 @@ return [
     'too_many_requests' => 'طلبات كثيرة جداً، يرجى المحاولة لاحقاً.',
     'server_error' => 'حدث خطأ غير متوقع في الخادم.',
     'success' => 'تمت العملية بنجاح',
+    'invalid_credentials' => 'بيانات الاعتماد غير صحيحة.',
+    'registered_successfully' => 'تم التسجيل بنجاح.',
+    'logged_in_successfully' => 'تم تسجيل الدخول بنجاح.',
+    'logged_out_successfully' => 'تم تسجيل الخروج بنجاح.',
+    'logged_out_all_successfully' => 'تم تسجيل الخروج من جميع الأجهزة بنجاح.',
+    'password_changed_successfully' => 'تم تغيير كلمة المرور بنجاح.',
+    'profile_retrieved_successfully' => 'تم استرجاع الملف الشخصي بنجاح.',
+    'current_password_invalid' => 'كلمة المرور الحالية غير صحيحة.',
 ];
