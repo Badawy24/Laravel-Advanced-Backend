@@ -7,13 +7,13 @@ namespace Tests\Feature;
 use App\Enums\UserRole;
 use App\Models\Customer;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class AuthApiTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     private string $apiKey;
 

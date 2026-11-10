@@ -1,0 +1,2081 @@
+{
+  "apidogProject": "1.0.0",
+  "$schema": {
+    "app": "apidog",
+    "type": "project",
+    "version": "1.2.0"
+  },
+  "info": {
+    "name": "E-ramo",
+    "description": "",
+    "mockRule": {
+      "rules": [],
+      "enableSystemRule": true
+    }
+  },
+  "projectSetting": {
+    "id": "1412841",
+    "auth": {},
+    "securityScheme": {},
+    "gateway": [],
+    "language": "en-US",
+    "apiStatuses": [
+      "developing",
+      "testing",
+      "released",
+      "deprecated"
+    ],
+    "mockSettings": {},
+    "preProcessors": [],
+    "postProcessors": [],
+    "advancedSettings": {
+      "allowAutomationWriteAutomationCreatedSprintBranch": true,
+      "enableJsonc": false,
+      "enableBigint": false,
+      "responseValidate": true,
+      "enableTestScenarioSetting": false,
+      "enableYAPICompatScript": false,
+      "isDefaultUrlEncoding": 3,
+      "publishedDocUrlRules": {
+        "defaultRule": "SLUGIFY_WITH_RESOURCE_KEY",
+        "resourceKeyStandard": "NEW",
+        "enableHierarchicalSlug": false
+      }
+    },
+    "initialDisabledMockIds": [],
+    "servers": [
+      {
+        "id": "default",
+        "name": "Default Server",
+        "moduleId": 1517449
+      }
+    ],
+    "cloudMock": {
+      "enable": false,
+      "security": "free",
+      "tokenKey": "apidogToken",
+      "isCreatedAutomaticallyByDefaultConfigFromAdmin": true
+    }
+  },
+  "apiCollection": [
+    {
+      "id": 8001,
+      "name": "Auth",
+      "type": "category",
+      "parentId": 0,
+      "moduleId": 1517449,
+      "items": [
+        {
+          "id": 1001,
+          "name": "Register",
+          "method": "post",
+          "path": "/api/v1/auth/register",
+          "status": "released",
+          "auth": {},
+          "parameters": {
+            "header": [
+              {
+                "name": "X-APP-ACCESS-KEY",
+                "type": "string",
+                "required": true,
+                "description": "API Access Key",
+                "example": "{{X-APP-ACCESS-KEY}}",
+                "value": "{{X-APP-ACCESS-KEY}}"
+              },
+              {
+                "name": "Accept",
+                "type": "string",
+                "required": true,
+                "description": "Accept header",
+                "example": "application/json"
+              }
+            ]
+          },
+          "requestBody": {
+            "type": "application/json",
+            "jsonSchema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "example": "newuser"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "New User"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "Password123!"
+                },
+                "password_confirmation": {
+                  "type": "string",
+                  "example": "Password123!"
+                }
+              },
+              "required": [
+                "username",
+                "name",
+                "password",
+                "password_confirmation"
+              ]
+            },
+            "example": "{\n  \"username\": \"newuser\",\n  \"name\": \"New User\",\n  \"password\": \"Password123!\",\n  \"password_confirmation\": \"Password123!\"\n}"
+          },
+          "responses": [
+            {
+              "id": 20101,
+              "name": "Created",
+              "code": 201,
+              "contentType": "json",
+              "jsonSchema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Registered successfully."
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "user": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "username": {
+                            "type": "string",
+                            "example": "customer1"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Customer One"
+                          },
+                          "email": {
+                            "type": "string",
+                            "nullable": true,
+                            "example": "customer1@example.com"
+                          },
+                          "role": {
+                            "type": "string",
+                            "enum": [
+                              "customer",
+                              "admin"
+                            ],
+                            "example": "customer"
+                          },
+                          "customer": {
+                            "type": "object",
+                            "nullable": true,
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "phone": {
+                                "type": "string",
+                                "nullable": true,
+                                "example": "+201000000001"
+                              },
+                              "address": {
+                                "type": "string",
+                                "nullable": true,
+                                "example": "123 El-Tahrir Street, Cairo"
+                              }
+                            }
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2026-11-10T10:00:00.000000Z"
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2026-11-10T10:00:00.000000Z"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "username",
+                          "name",
+                          "role",
+                          "created_at",
+                          "updated_at"
+                        ]
+                      },
+                      "token": {
+                        "type": "string",
+                        "example": "1|abcdef1234567890..."
+                      },
+                      "token_type": {
+                        "type": "string",
+                        "example": "Bearer"
+                      }
+                    },
+                    "required": [
+                      "user",
+                      "token",
+                      "token_type"
+                    ]
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-11-10T10:00:00.000000Z"
+                  }
+                },
+                "required": [
+                  "success",
+                  "message",
+                  "timestamp"
+                ]
+              },
+              "example": "{\n  \"success\": true,\n  \"message\": \"Registered successfully.\",\n  \"data\": {\n    \"user\": {\n      \"id\": 5,\n      \"username\": \"newuser\",\n      \"name\": \"New User\",\n      \"email\": null,\n      \"role\": \"customer\",\n      \"customer\": {\n        \"id\": 4,\n        \"phone\": null,\n        \"address\": null\n      },\n      \"created_at\": \"2026-11-10T10:00:00.000000Z\",\n      \"updated_at\": \"2026-11-10T10:00:00.000000Z\"\n    },\n    \"token\": \"5|abcdef123456...\",\n    \"token_type\": \"Bearer\"\n  },\n  \"timestamp\": \"2026-11-10T10:00:00.000000Z\"\n}"
+            },
+            {
+              "id": 40101,
+              "name": "Unauthorized / Invalid Credentials",
+              "code": 401,
+              "contentType": "json",
+              "jsonSchema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Invalid credentials."
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-11-10T10:00:00.000000Z"
+                  }
+                },
+                "required": [
+                  "status",
+                  "success",
+                  "message",
+                  "timestamp"
+                ]
+              },
+              "example": "{\n  \"status\": \"error\",\n  \"success\": false,\n  \"message\": \"Invalid credentials.\",\n  \"timestamp\": \"2026-11-10T10:00:00.000000Z\"\n}"
+            },
+            {
+              "id": 42201,
+              "name": "Validation Error",
+              "code": 422,
+              "contentType": "json",
+              "jsonSchema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "The username field is required."
+                  },
+                  "errors": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "example": {
+                      "username": [
+                        "The username field is required."
+                      ]
+                    }
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-11-10T10:00:00.000000Z"
+                  }
+                },
+                "required": [
+                  "status",
+                  "success",
+                  "message",
+                  "errors",
+                  "timestamp"
+                ]
+              },
+              "example": "{\n  \"status\": \"error\",\n  \"success\": false,\n  \"message\": \"The username field is required.\",\n  \"errors\": {\n    \"username\": [\n      \"The username field is required.\"\n    ]\n  },\n  \"timestamp\": \"2026-11-10T10:00:00.000000Z\"\n}"
+            },
+            {
+              "id": 42901,
+              "name": "Too Many Requests",
+              "code": 429,
+              "contentType": "json",
+              "jsonSchema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Invalid credentials."
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-11-10T10:00:00.000000Z"
+                  }
+                },
+                "required": [
+                  "status",
+                  "success",
+                  "message",
+                  "timestamp"
+                ]
+              },
+              "example": "{\n  \"status\": \"error\",\n  \"success\": false,\n  \"message\": \"Too many requests.\",\n  \"timestamp\": \"2026-11-10T10:00:00.000000Z\"\n}"
+            }
+          ],
+          "postProcessors": [
+            {
+              "type": "customScript",
+              "data": {
+                "code": "let jsonData;\ntry {\n    jsonData = pm.response.json();\n} catch (e) {\n    return;\n}\n\n\nif (jsonData.data && jsonData.data.token) {\n    let token = jsonData.data.token;\n\n    pm.environment.set(\"TOKEN\", token);\n}"
+              }
+            }
+          ]
+        },
+        {
+          "id": 1002,
+          "name": "Login",
+          "method": "post",
+          "path": "/api/v1/auth/login",
+          "status": "released",
+          "auth": {},
+          "parameters": {
+            "header": [
+              {
+                "name": "X-APP-ACCESS-KEY",
+                "type": "string",
+                "required": true,
+                "description": "API Access Key",
+                "example": "{{X-APP-ACCESS-KEY}}",
+                "value": "{{X-APP-ACCESS-KEY}}"
+              },
+              {
+                "name": "Accept",
+                "type": "string",
+                "required": true,
+                "description": "Accept header",
+                "example": "application/json"
+              }
+            ]
+          },
+          "requestBody": {
+            "type": "application/json",
+            "jsonSchema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "example": "customer1"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "Password123!"
+                }
+              },
+              "required": [
+                "username",
+                "password"
+              ]
+            },
+            "example": "{\n  \"username\": \"customer1\",\n  \"password\": \"Password123!\"\n}"
+          },
+          "responses": [
+            {
+              "id": 20001,
+              "name": "OK",
+              "code": 200,
+              "contentType": "json",
+              "jsonSchema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Logged in successfully."
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "user": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "username": {
+                            "type": "string",
+                            "example": "customer1"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Customer One"
+                          },
+                          "email": {
+                            "type": "string",
+                            "nullable": true,
+                            "example": "customer1@example.com"
+                          },
+                          "role": {
+                            "type": "string",
+                            "enum": [
+                              "customer",
+                              "admin"
+                            ],
+                            "example": "customer"
+                          },
+                          "customer": {
+                            "type": "object",
+                            "nullable": true,
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "phone": {
+                                "type": "string",
+                                "nullable": true,
+                                "example": "+201000000001"
+                              },
+                              "address": {
+                                "type": "string",
+                                "nullable": true,
+                                "example": "123 El-Tahrir Street, Cairo"
+                              }
+                            }
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2026-11-10T10:00:00.000000Z"
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2026-11-10T10:00:00.000000Z"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "username",
+                          "name",
+                          "role",
+                          "created_at",
+                          "updated_at"
+                        ]
+                      },
+                      "token": {
+                        "type": "string",
+                        "example": "1|abcdef1234567890..."
+                      },
+                      "token_type": {
+                        "type": "string",
+                        "example": "Bearer"
+                      }
+                    },
+                    "required": [
+                      "user",
+                      "token",
+                      "token_type"
+                    ]
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-11-10T10:00:00.000000Z"
+                  }
+                },
+                "required": [
+                  "success",
+                  "message",
+                  "timestamp"
+                ]
+              },
+              "example": "{\n  \"success\": true,\n  \"message\": \"Logged in successfully.\",\n  \"data\": {\n    \"user\": {\n      \"id\": 2,\n      \"username\": \"customer1\",\n      \"name\": \"Customer One\",\n      \"email\": \"customer1@example.com\",\n      \"role\": \"customer\",\n      \"customer\": {\n        \"id\": 1,\n        \"phone\": \"+201000000001\",\n        \"address\": \"123 El-Tahrir Street, Cairo\"\n      },\n      \"created_at\": \"2026-11-10T10:00:00.000000Z\",\n      \"updated_at\": \"2026-11-10T10:00:00.000000Z\"\n    },\n    \"token\": \"6|abcdef123456...\",\n    \"token_type\": \"Bearer\"\n  },\n  \"timestamp\": \"2026-11-10T10:00:00.000000Z\"\n}"
+            },
+            {
+              "id": 40101,
+              "name": "Unauthorized / Invalid Credentials",
+              "code": 401,
+              "contentType": "json",
+              "jsonSchema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Invalid credentials."
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-11-10T10:00:00.000000Z"
+                  }
+                },
+                "required": [
+                  "status",
+                  "success",
+                  "message",
+                  "timestamp"
+                ]
+              },
+              "example": "{\n  \"status\": \"error\",\n  \"success\": false,\n  \"message\": \"Invalid credentials.\",\n  \"timestamp\": \"2026-11-10T10:00:00.000000Z\"\n}"
+            },
+            {
+              "id": 42201,
+              "name": "Validation Error",
+              "code": 422,
+              "contentType": "json",
+              "jsonSchema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "The username field is required."
+                  },
+                  "errors": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "example": {
+                      "username": [
+                        "The username field is required."
+                      ]
+                    }
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-11-10T10:00:00.000000Z"
+                  }
+                },
+                "required": [
+                  "status",
+                  "success",
+                  "message",
+                  "errors",
+                  "timestamp"
+                ]
+              },
+              "example": "{\n  \"status\": \"error\",\n  \"success\": false,\n  \"message\": \"The username field is required.\",\n  \"errors\": {\n    \"username\": [\n      \"The username field is required.\"\n    ]\n  },\n  \"timestamp\": \"2026-11-10T10:00:00.000000Z\"\n}"
+            },
+            {
+              "id": 42901,
+              "name": "Too Many Requests",
+              "code": 429,
+              "contentType": "json",
+              "jsonSchema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Invalid credentials."
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-11-10T10:00:00.000000Z"
+                  }
+                },
+                "required": [
+                  "status",
+                  "success",
+                  "message",
+                  "timestamp"
+                ]
+              },
+              "example": "{\n  \"status\": \"error\",\n  \"success\": false,\n  \"message\": \"Too many requests.\",\n  \"timestamp\": \"2026-11-10T10:00:00.000000Z\"\n}"
+            }
+          ],
+          "postProcessors": [
+            {
+              "type": "customScript",
+              "data": {
+                "code": "let jsonData;\ntry {\n    jsonData = pm.response.json();\n} catch (e) {\n    return;\n}\n\n\nif (jsonData.data && jsonData.data.token) {\n    let token = jsonData.data.token;\n\n    pm.environment.set(\"TOKEN\", token);\n}"
+              }
+            }
+          ]
+        },
+        {
+          "id": 1003,
+          "name": "Profile",
+          "method": "get",
+          "path": "/api/v1/auth/profile",
+          "status": "released",
+          "auth": {
+            "type": "bearer",
+            "bearer": {
+              "token": "{{TOKEN}}"
+            }
+          },
+          "parameters": {
+            "header": [
+              {
+                "name": "X-APP-ACCESS-KEY",
+                "type": "string",
+                "required": true,
+                "description": "API Access Key",
+                "example": "{{X-APP-ACCESS-KEY}}",
+                "value": "{{X-APP-ACCESS-KEY}}"
+              },
+              {
+                "name": "Accept",
+                "type": "string",
+                "required": true,
+                "description": "Accept header",
+                "example": "application/json"
+              },
+              {
+                "name": "Authorization",
+                "type": "string",
+                "required": true,
+                "description": "Bearer token",
+                "value": "Bearer {{TOKEN}}",
+                "example": "Bearer {{TOKEN}}"
+              }
+            ]
+          },
+          "responses": [
+            {
+              "id": 20001,
+              "name": "OK",
+              "code": 200,
+              "contentType": "json",
+              "jsonSchema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Profile retrieved successfully."
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "example": 1
+                      },
+                      "username": {
+                        "type": "string",
+                        "example": "customer1"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Customer One"
+                      },
+                      "email": {
+                        "type": "string",
+                        "nullable": true,
+                        "example": "customer1@example.com"
+                      },
+                      "role": {
+                        "type": "string",
+                        "enum": [
+                          "customer",
+                          "admin"
+                        ],
+                        "example": "customer"
+                      },
+                      "customer": {
+                        "type": "object",
+                        "nullable": true,
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "phone": {
+                            "type": "string",
+                            "nullable": true,
+                            "example": "+201000000001"
+                          },
+                          "address": {
+                            "type": "string",
+                            "nullable": true,
+                            "example": "123 El-Tahrir Street, Cairo"
+                          }
+                        }
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-11-10T10:00:00.000000Z"
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-11-10T10:00:00.000000Z"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "username",
+                      "name",
+                      "role",
+                      "created_at",
+                      "updated_at"
+                    ]
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-11-10T10:00:00.000000Z"
+                  }
+                },
+                "required": [
+                  "success",
+                  "message",
+                  "timestamp"
+                ]
+              },
+              "example": "{\n  \"success\": true,\n  \"message\": \"Profile retrieved successfully.\",\n  \"data\": {\n    \"id\": 2,\n    \"username\": \"customer1\",\n    \"name\": \"Customer One\",\n    \"email\": \"customer1@example.com\",\n    \"role\": \"customer\",\n    \"customer\": {\n      \"id\": 1,\n      \"phone\": \"+201000000001\",\n      \"address\": \"123 El-Tahrir Street, Cairo\"\n    },\n    \"created_at\": \"2026-11-10T10:00:00.000000Z\",\n    \"updated_at\": \"2026-11-10T10:00:00.000000Z\"\n  },\n  \"timestamp\": \"2026-11-10T10:00:00.000000Z\"\n}"
+            },
+            {
+              "id": 40101,
+              "name": "Unauthorized / Invalid Credentials",
+              "code": 401,
+              "contentType": "json",
+              "jsonSchema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Invalid credentials."
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-11-10T10:00:00.000000Z"
+                  }
+                },
+                "required": [
+                  "status",
+                  "success",
+                  "message",
+                  "timestamp"
+                ]
+              },
+              "example": "{\n  \"status\": \"error\",\n  \"success\": false,\n  \"message\": \"Invalid credentials.\",\n  \"timestamp\": \"2026-11-10T10:00:00.000000Z\"\n}"
+            },
+            {
+              "id": 42901,
+              "name": "Too Many Requests",
+              "code": 429,
+              "contentType": "json",
+              "jsonSchema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Invalid credentials."
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-11-10T10:00:00.000000Z"
+                  }
+                },
+                "required": [
+                  "status",
+                  "success",
+                  "message",
+                  "timestamp"
+                ]
+              },
+              "example": "{\n  \"status\": \"error\",\n  \"success\": false,\n  \"message\": \"Too many requests.\",\n  \"timestamp\": \"2026-11-10T10:00:00.000000Z\"\n}"
+            }
+          ]
+        },
+        {
+          "id": 1004,
+          "name": "Logout",
+          "method": "post",
+          "path": "/api/v1/auth/logout",
+          "status": "released",
+          "auth": {
+            "type": "bearer",
+            "bearer": {
+              "token": "{{TOKEN}}"
+            }
+          },
+          "parameters": {
+            "header": [
+              {
+                "name": "X-APP-ACCESS-KEY",
+                "type": "string",
+                "required": true,
+                "description": "API Access Key",
+                "example": "{{X-APP-ACCESS-KEY}}",
+                "value": "{{X-APP-ACCESS-KEY}}"
+              },
+              {
+                "name": "Accept",
+                "type": "string",
+                "required": true,
+                "description": "Accept header",
+                "example": "application/json"
+              },
+              {
+                "name": "Authorization",
+                "type": "string",
+                "required": true,
+                "description": "Bearer token",
+                "value": "Bearer {{TOKEN}}",
+                "example": "Bearer {{TOKEN}}"
+              }
+            ]
+          },
+          "responses": [
+            {
+              "id": 20001,
+              "name": "OK",
+              "code": 200,
+              "contentType": "json",
+              "jsonSchema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Logged out successfully."
+                  },
+                  "data": {
+                    "type": "null"
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-11-10T10:00:00.000000Z"
+                  }
+                },
+                "required": [
+                  "success",
+                  "message",
+                  "timestamp"
+                ]
+              },
+              "example": "{\n  \"success\": true,\n  \"message\": \"Logged out successfully.\",\n  \"data\": null,\n  \"timestamp\": \"2026-11-10T10:00:00.000000Z\"\n}"
+            },
+            {
+              "id": 40101,
+              "name": "Unauthorized / Invalid Credentials",
+              "code": 401,
+              "contentType": "json",
+              "jsonSchema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Invalid credentials."
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-11-10T10:00:00.000000Z"
+                  }
+                },
+                "required": [
+                  "status",
+                  "success",
+                  "message",
+                  "timestamp"
+                ]
+              },
+              "example": "{\n  \"status\": \"error\",\n  \"success\": false,\n  \"message\": \"Invalid credentials.\",\n  \"timestamp\": \"2026-11-10T10:00:00.000000Z\"\n}"
+            },
+            {
+              "id": 42901,
+              "name": "Too Many Requests",
+              "code": 429,
+              "contentType": "json",
+              "jsonSchema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Invalid credentials."
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-11-10T10:00:00.000000Z"
+                  }
+                },
+                "required": [
+                  "status",
+                  "success",
+                  "message",
+                  "timestamp"
+                ]
+              },
+              "example": "{\n  \"status\": \"error\",\n  \"success\": false,\n  \"message\": \"Too many requests.\",\n  \"timestamp\": \"2026-11-10T10:00:00.000000Z\"\n}"
+            }
+          ]
+        },
+        {
+          "id": 1005,
+          "name": "Logout All",
+          "method": "post",
+          "path": "/api/v1/auth/logout-all",
+          "status": "released",
+          "auth": {
+            "type": "bearer",
+            "bearer": {
+              "token": "{{TOKEN}}"
+            }
+          },
+          "parameters": {
+            "header": [
+              {
+                "name": "X-APP-ACCESS-KEY",
+                "type": "string",
+                "required": true,
+                "description": "API Access Key",
+                "example": "{{X-APP-ACCESS-KEY}}",
+                "value": "{{X-APP-ACCESS-KEY}}"
+              },
+              {
+                "name": "Accept",
+                "type": "string",
+                "required": true,
+                "description": "Accept header",
+                "example": "application/json"
+              },
+              {
+                "name": "Authorization",
+                "type": "string",
+                "required": true,
+                "description": "Bearer token",
+                "value": "Bearer {{TOKEN}}",
+                "example": "Bearer {{TOKEN}}"
+              }
+            ]
+          },
+          "responses": [
+            {
+              "id": 20001,
+              "name": "OK",
+              "code": 200,
+              "contentType": "json",
+              "jsonSchema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Logged out from all devices successfully."
+                  },
+                  "data": {
+                    "type": "null"
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-11-10T10:00:00.000000Z"
+                  }
+                },
+                "required": [
+                  "success",
+                  "message",
+                  "timestamp"
+                ]
+              },
+              "example": "{\n  \"success\": true,\n  \"message\": \"Logged out from all devices successfully.\",\n  \"data\": null,\n  \"timestamp\": \"2026-11-10T10:00:00.000000Z\"\n}"
+            },
+            {
+              "id": 40101,
+              "name": "Unauthorized / Invalid Credentials",
+              "code": 401,
+              "contentType": "json",
+              "jsonSchema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Invalid credentials."
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-11-10T10:00:00.000000Z"
+                  }
+                },
+                "required": [
+                  "status",
+                  "success",
+                  "message",
+                  "timestamp"
+                ]
+              },
+              "example": "{\n  \"status\": \"error\",\n  \"success\": false,\n  \"message\": \"Invalid credentials.\",\n  \"timestamp\": \"2026-11-10T10:00:00.000000Z\"\n}"
+            },
+            {
+              "id": 42901,
+              "name": "Too Many Requests",
+              "code": 429,
+              "contentType": "json",
+              "jsonSchema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Invalid credentials."
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-11-10T10:00:00.000000Z"
+                  }
+                },
+                "required": [
+                  "status",
+                  "success",
+                  "message",
+                  "timestamp"
+                ]
+              },
+              "example": "{\n  \"status\": \"error\",\n  \"success\": false,\n  \"message\": \"Too many requests.\",\n  \"timestamp\": \"2026-11-10T10:00:00.000000Z\"\n}"
+            }
+          ]
+        },
+        {
+          "id": 1006,
+          "name": "Change Password",
+          "method": "put",
+          "path": "/api/v1/auth/password",
+          "status": "released",
+          "auth": {
+            "type": "bearer",
+            "bearer": {
+              "token": "{{TOKEN}}"
+            }
+          },
+          "parameters": {
+            "header": [
+              {
+                "name": "X-APP-ACCESS-KEY",
+                "type": "string",
+                "required": true,
+                "description": "API Access Key",
+                "example": "{{X-APP-ACCESS-KEY}}",
+                "value": "{{X-APP-ACCESS-KEY}}"
+              },
+              {
+                "name": "Accept",
+                "type": "string",
+                "required": true,
+                "description": "Accept header",
+                "example": "application/json"
+              },
+              {
+                "name": "Authorization",
+                "type": "string",
+                "required": true,
+                "description": "Bearer token",
+                "value": "Bearer {{TOKEN}}",
+                "example": "Bearer {{TOKEN}}"
+              }
+            ]
+          },
+          "requestBody": {
+            "type": "application/json",
+            "jsonSchema": {
+              "type": "object",
+              "properties": {
+                "current_password": {
+                  "type": "string",
+                  "example": "OldPassword123!"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "NewPassword123!"
+                },
+                "password_confirmation": {
+                  "type": "string",
+                  "example": "NewPassword123!"
+                }
+              },
+              "required": [
+                "current_password",
+                "password",
+                "password_confirmation"
+              ]
+            },
+            "example": "{\n  \"current_password\": \"OldPassword123!\",\n  \"password\": \"NewPassword123!\",\n  \"password_confirmation\": \"NewPassword123!\"\n}"
+          },
+          "responses": [
+            {
+              "id": 20001,
+              "name": "OK",
+              "code": 200,
+              "contentType": "json",
+              "jsonSchema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Password changed successfully."
+                  },
+                  "data": {
+                    "type": "null"
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-11-10T10:00:00.000000Z"
+                  }
+                },
+                "required": [
+                  "success",
+                  "message",
+                  "timestamp"
+                ]
+              },
+              "example": "{\n  \"success\": true,\n  \"message\": \"Password changed successfully.\",\n  \"data\": null,\n  \"timestamp\": \"2026-11-10T10:00:00.000000Z\"\n}"
+            },
+            {
+              "id": 40101,
+              "name": "Unauthorized / Invalid Credentials",
+              "code": 401,
+              "contentType": "json",
+              "jsonSchema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Invalid credentials."
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-11-10T10:00:00.000000Z"
+                  }
+                },
+                "required": [
+                  "status",
+                  "success",
+                  "message",
+                  "timestamp"
+                ]
+              },
+              "example": "{\n  \"status\": \"error\",\n  \"success\": false,\n  \"message\": \"Invalid credentials.\",\n  \"timestamp\": \"2026-11-10T10:00:00.000000Z\"\n}"
+            },
+            {
+              "id": 42201,
+              "name": "Validation Error",
+              "code": 422,
+              "contentType": "json",
+              "jsonSchema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "The username field is required."
+                  },
+                  "errors": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "example": {
+                      "username": [
+                        "The username field is required."
+                      ]
+                    }
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-11-10T10:00:00.000000Z"
+                  }
+                },
+                "required": [
+                  "status",
+                  "success",
+                  "message",
+                  "errors",
+                  "timestamp"
+                ]
+              },
+              "example": "{\n  \"status\": \"error\",\n  \"success\": false,\n  \"message\": \"The username field is required.\",\n  \"errors\": {\n    \"username\": [\n      \"The username field is required.\"\n    ]\n  },\n  \"timestamp\": \"2026-11-10T10:00:00.000000Z\"\n}"
+            },
+            {
+              "id": 42901,
+              "name": "Too Many Requests",
+              "code": 429,
+              "contentType": "json",
+              "jsonSchema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Invalid credentials."
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-11-10T10:00:00.000000Z"
+                  }
+                },
+                "required": [
+                  "status",
+                  "success",
+                  "message",
+                  "timestamp"
+                ]
+              },
+              "example": "{\n  \"status\": \"error\",\n  \"success\": false,\n  \"message\": \"Too many requests.\",\n  \"timestamp\": \"2026-11-10T10:00:00.000000Z\"\n}"
+            }
+          ]
+        }
+      ],
+      "ordering": [
+        1001,
+        1002,
+        1003,
+        1004,
+        1005,
+        1006
+      ]
+    },
+    {
+      "id": 8002,
+      "name": "Orders",
+      "type": "category",
+      "parentId": 0,
+      "moduleId": 1517449,
+      "items": [
+        {
+          "id": 2001,
+          "name": "Create Order",
+          "method": "post",
+          "path": "/api/v1/orders",
+          "status": "released",
+          "auth": {
+            "type": "bearer",
+            "bearer": {
+              "token": "{{TOKEN}}"
+            }
+          },
+          "parameters": {
+            "header": [
+              {
+                "name": "X-APP-ACCESS-KEY",
+                "type": "string",
+                "required": true,
+                "description": "API Access Key",
+                "example": "{{X-APP-ACCESS-KEY}}",
+                "value": "{{X-APP-ACCESS-KEY}}"
+              },
+              {
+                "name": "Authorization",
+                "type": "string",
+                "required": true,
+                "description": "Bearer token for authenticated user",
+                "example": "Bearer {{TOKEN}}",
+                "value": "Bearer {{TOKEN}}"
+              },
+              {
+                "name": "Accept",
+                "type": "string",
+                "required": true,
+                "description": "Accept header",
+                "example": "application/json"
+              },
+              {
+                "name": "Idempotency-Key",
+                "type": "string",
+                "required": false,
+                "description": "Optional idempotency key to prevent duplicate orders",
+                "example": "order-req-12345"
+              }
+            ]
+          },
+          "requestBody": {
+            "type": "application/json",
+            "jsonSchema": {
+              "type": "object",
+              "properties": {
+                "branch_id": {
+                  "type": "integer",
+                  "example": 1
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "product_id": {
+                        "type": "integer",
+                        "example": 1
+                      },
+                      "quantity": {
+                        "type": "integer",
+                        "example": 2
+                      }
+                    },
+                    "required": [
+                      "product_id",
+                      "quantity"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "branch_id",
+                "items"
+              ]
+            },
+            "example": "{\n  \"branch_id\": 1,\n  \"items\": [\n    {\n      \"product_id\": 1,\n      \"quantity\": 2\n    }\n  ]\n}"
+          },
+          "responses": [
+            {
+              "id": 20102,
+              "name": "Created",
+              "code": 201,
+              "contentType": "json",
+              "example": "{\n  \"success\": true,\n  \"message\": \"Order created and stock reserved successfully.\",\n  \"data\": {\n    \"id\": 1,\n    \"number\": \"01ARZ3NDEKTSV4RRFFQ69G5FAV\",\n    \"customer_id\": 1,\n    \"branch_id\": 1,\n    \"status\": \"pending\",\n    \"total_amount\": 150.00,\n    \"currency\": \"EGP\",\n    \"idempotency_key\": null,\n    \"items\": [\n      {\n        \"id\": 1,\n        \"order_id\": 1,\n        \"product_id\": 1,\n        \"quantity\": 2,\n        \"unit_price\": 75.00,\n        \"line_total\": 150.00,\n        \"created_at\": \"2026-11-10T12:00:00.000000Z\",\n        \"updated_at\": \"2026-11-10T12:00:00.000000Z\"\n      }\n    ],\n    \"created_at\": \"2026-11-10T12:00:00.000000Z\",\n    \"updated_at\": \"2026-11-10T12:00:00.000000Z\"\n  },\n  \"timestamp\": \"2026-11-10T12:00:00.000000Z\"\n}"
+            },
+            {
+              "id": 40102,
+              "name": "Unauthorized",
+              "code": 401,
+              "contentType": "json",
+              "example": "{\n  \"status\": \"error\",\n  \"success\": false,\n  \"message\": \"Unauthenticated.\",\n  \"timestamp\": \"2026-11-10T12:00:00.000000Z\"\n}"
+            },
+            {
+              "id": 40302,
+              "name": "Forbidden",
+              "code": 403,
+              "contentType": "json",
+              "example": "{\n  \"status\": \"error\",\n  \"success\": false,\n  \"message\": \"A customer profile is required to place an order.\",\n  \"timestamp\": \"2026-11-10T12:00:00.000000Z\"\n}"
+            },
+            {
+              "id": 40902,
+              "name": "Conflict / Insufficient Stock",
+              "code": 409,
+              "contentType": "json",
+              "example": "{\n  \"status\": \"error\",\n  \"success\": false,\n  \"message\": \"Insufficient available stock for one or more requested products.\",\n  \"timestamp\": \"2026-11-10T12:00:00.000000Z\"\n}"
+            },
+            {
+              "id": 42202,
+              "name": "Validation Error",
+              "code": 422,
+              "contentType": "json",
+              "example": "{\n  \"status\": \"error\",\n  \"success\": false,\n  \"message\": \"Validation failed.\",\n  \"errors\": {\n    \"branch_id\": [\n      \"The selected branch is inactive.\"\n    ]\n  },\n  \"timestamp\": \"2026-11-10T12:00:00.000000Z\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "socketCollection": [],
+  "docCollection": [],
+  "webSocketCollection": [],
+  "socketIOCollection": [],
+  "mcpClientCollection": [],
+  "responseCollection": [
+    {
+      "_databaseId": 1840853,
+      "updatedAt": "2026-11-10T09:11:27.000Z",
+      "id": 1840853,
+      "name": "Root",
+      "type": "root",
+      "children": [],
+      "moduleId": 1517449,
+      "parentId": 0,
+      "ordering": [],
+      "items": []
+    }
+  ],
+  "schemaCollection": [
+    {
+      "id": 3906380,
+      "name": "Root",
+      "visibility": "SHARED",
+      "moduleId": 1517449,
+      "items": [
+        {
+          "id": 9001,
+          "name": "User",
+          "type": "object",
+          "jsonSchema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 1
+              },
+              "username": {
+                "type": "string",
+                "example": "customer1"
+              },
+              "name": {
+                "type": "string",
+                "example": "Customer One"
+              },
+              "email": {
+                "type": "string",
+                "nullable": true,
+                "example": "customer1@example.com"
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "customer",
+                  "admin"
+                ],
+                "example": "customer"
+              },
+              "customer": {
+                "type": "object",
+                "nullable": true,
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "phone": {
+                    "type": "string",
+                    "nullable": true,
+                    "example": "+201000000001"
+                  },
+                  "address": {
+                    "type": "string",
+                    "nullable": true,
+                    "example": "123 El-Tahrir Street, Cairo"
+                  }
+                }
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-10T10:00:00.000000Z"
+              },
+              "updated_at": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-10T10:00:00.000000Z"
+              }
+            },
+            "required": [
+              "id",
+              "username",
+              "name",
+              "role",
+              "created_at",
+              "updated_at"
+            ]
+          },
+          "moduleId": 1517449
+        },
+        {
+          "id": 9002,
+          "name": "AuthResponse",
+          "type": "object",
+          "jsonSchema": {
+            "type": "object",
+            "properties": {
+              "user": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "username": {
+                    "type": "string",
+                    "example": "customer1"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Customer One"
+                  },
+                  "email": {
+                    "type": "string",
+                    "nullable": true,
+                    "example": "customer1@example.com"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "customer",
+                      "admin"
+                    ],
+                    "example": "customer"
+                  },
+                  "customer": {
+                    "type": "object",
+                    "nullable": true,
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "example": 1
+                      },
+                      "phone": {
+                        "type": "string",
+                        "nullable": true,
+                        "example": "+201000000001"
+                      },
+                      "address": {
+                        "type": "string",
+                        "nullable": true,
+                        "example": "123 El-Tahrir Street, Cairo"
+                      }
+                    }
+                  },
+                  "created_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-11-10T10:00:00.000000Z"
+                  },
+                  "updated_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-11-10T10:00:00.000000Z"
+                  }
+                },
+                "required": [
+                  "id",
+                  "username",
+                  "name",
+                  "role",
+                  "created_at",
+                  "updated_at"
+                ]
+              },
+              "token": {
+                "type": "string",
+                "example": "1|abcdef1234567890..."
+              },
+              "token_type": {
+                "type": "string",
+                "example": "Bearer"
+              }
+            },
+            "required": [
+              "user",
+              "token",
+              "token_type"
+            ]
+          },
+          "moduleId": 1517449
+        },
+        {
+          "id": 9003,
+          "name": "Error",
+          "type": "object",
+          "jsonSchema": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "example": "error"
+              },
+              "success": {
+                "type": "boolean",
+                "example": false
+              },
+              "message": {
+                "type": "string",
+                "example": "Invalid credentials."
+              },
+              "timestamp": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-10T10:00:00.000000Z"
+              }
+            },
+            "required": [
+              "status",
+              "success",
+              "message",
+              "timestamp"
+            ]
+          },
+          "moduleId": 1517449
+        },
+        {
+          "id": 9004,
+          "name": "ValidationError",
+          "type": "object",
+          "jsonSchema": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "example": "error"
+              },
+              "success": {
+                "type": "boolean",
+                "example": false
+              },
+              "message": {
+                "type": "string",
+                "example": "The username field is required."
+              },
+              "errors": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "username": [
+                    "The username field is required."
+                  ]
+                }
+              },
+              "timestamp": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-10T10:00:00.000000Z"
+              }
+            },
+            "required": [
+              "status",
+              "success",
+              "message",
+              "errors",
+              "timestamp"
+            ]
+          },
+          "moduleId": 1517449
+        }
+      ],
+      "ordering": [
+        9001,
+        9002,
+        9003,
+        9004
+      ]
+    }
+  ],
+  "securitySchemeCollection": [
+    {
+      "id": 2563125,
+      "moduleId": 1517449,
+      "name": "Root",
+      "items": [],
+      "ordering": []
+    }
+  ],
+  "oasComponentCollection": [],
+  "requestCollection": [
+    {
+      "name": "Root",
+      "children": [],
+      "ordering": [
+        "requestFolder.11169859"
+      ],
+      "items": []
+    }
+  ],
+  "apiTestCaseCollection": [
+    {
+      "id": 0,
+      "name": "Root",
+      "children": [],
+      "items": []
+    }
+  ],
+  "testCaseReferences": [],
+  "environments": [
+    {
+      "id": 1001,
+      "name": "Local",
+      "parameters": [
+        {
+          "id": 1,
+          "name": "X-APP-ACCESS-KEY",
+          "value": "123456789",
+          "type": "string",
+          "enable": true,
+          "description": "API Access Key"
+        },
+        {
+          "id": 2,
+          "name": "TOKEN",
+          "value": "",
+          "type": "string",
+          "enable": true,
+          "description": "Sanctum Bearer Token"
+        }
+      ]
+    }
+  ],
+  "commonScripts": [],
+  "databaseConnections": [],
+  "globalVariables": [
+    {
+      "id": 1,
+      "name": "X-APP-ACCESS-KEY",
+      "value": "123456789",
+      "type": "string",
+      "enable": true
+    },
+    {
+      "id": 2,
+      "name": "TOKEN",
+      "value": "",
+      "type": "string",
+      "enable": true
+    }
+  ],
+  "commonParameters": {
+    "header": [
+      {
+        "id": 1,
+        "name": "X-APP-ACCESS-KEY",
+        "type": "string",
+        "required": true,
+        "description": "API Access Key from environment",
+        "value": "{{X-APP-ACCESS-KEY}}",
+        "example": "{{X-APP-ACCESS-KEY}}"
+      }
+    ]
+  },
+  "customFunctions": [],
+  "projectTestCaseCategories": [
+    {
+      "id": 2000828,
+      "name": "Positive",
+      "description": "Valid inputs and correct expected results, representing typical usage."
+    },
+    {
+      "id": 2000829,
+      "name": "Negative",
+      "description": "Negative, invalid inputs such as missing fields, wrong types, unsupported methods, etc."
+    },
+    {
+      "id": 2000830,
+      "name": "Boundary",
+      "description": "Extreme or edge conditions, such as maximum string length, empty values, zero, null, etc."
+    },
+    {
+      "id": 2000831,
+      "name": "Security",
+      "description": "Test cases that may expose API security risks."
+    },
+    {
+      "id": 2000832,
+      "name": "Other",
+      "description": "Test cases not classified under existing categories."
+    }
+  ],
+  "projectTestCaseTags": [
+    {
+      "id": 9911344,
+      "name": "Required Fields Only",
+      "description": "Send only the required fields with valid values, omitting all optional fields, to test minimal valid requests."
+    },
+    {
+      "id": 9911345,
+      "name": "Valid Semantic",
+      "description": "Use values that are syntactically correct and also make sense in the business logic or domain context."
+    },
+    {
+      "id": 9911346,
+      "name": "Enum Combination Coverage",
+      "description": "For all enum-type parameters, apply orthogonal design to systematically construct test case combinations of parameters and their enum values, dedicated to testing enum coverage."
+    },
+    {
+      "id": 9911347,
+      "name": "Other Positive Case",
+      "description": "Provide realistic and valid inputs that match the API specification, producing the correct and expected result."
+    },
+    {
+      "id": 9911348,
+      "name": "Missing Required Fields",
+      "description": "Omit one or more required fields in the request body or parameters."
+    },
+    {
+      "id": 9911349,
+      "name": "Invalid Values",
+      "description": "Provide values that are within the correct type and format, but logically invalid for the field."
+    },
+    {
+      "id": 9911350,
+      "name": "Type Errors",
+      "description": "Use values with incorrect data types, such as sending a string instead of an integer."
+    },
+    {
+      "id": 9911351,
+      "name": "Format Errors",
+      "description": "Provide values in an incorrect format, e.g., wrong date pattern, malformed email address."
+    },
+    {
+      "id": 9911352,
+      "name": "Semantic Errors",
+      "description": "Use syntactically correct and properly formatted values that are logically impossible or violate domain rules."
+    },
+    {
+      "id": 9911353,
+      "name": "Other Negative Case",
+      "description": "Provide invalid or unexpected inputs that should trigger error handling or rejection by the API."
+    },
+    {
+      "id": 9911354,
+      "name": "Null",
+      "description": "Must be the JSON literal `null` (not empty, not \"null\")."
+    },
+    {
+      "id": 9911355,
+      "name": "Zero",
+      "description": "Must be the numeric literal 0."
+    },
+    {
+      "id": 9911356,
+      "name": "Empty Values",
+      "description": "Must be \"\"."
+    },
+    {
+      "id": 9911357,
+      "name": "Max Values",
+      "description": "Provide the exact minimum and maximum allowed values for numeric or date fields."
+    },
+    {
+      "id": 9911358,
+      "name": "Min Values",
+      "description": "Provide the exact minimum and maximum allowed values for numeric or date fields."
+    },
+    {
+      "id": 9911359,
+      "name": "Overflow",
+      "description": "Provide values just beyond the allowed minimum or maximum boundaries."
+    },
+    {
+      "id": 9911360,
+      "name": "Underflow",
+      "description": "Provide values just beyond the allowed minimum or maximum boundaries."
+    },
+    {
+      "id": 9911361,
+      "name": "Overly Long Strings",
+      "description": "Provide strings longer than the maximum allowed length, or shorter than the minimum required length."
+    },
+    {
+      "id": 9911362,
+      "name": "Overly Short Strings",
+      "description": "Provide strings longer than the maximum allowed length, or shorter than the minimum required length."
+    },
+    {
+      "id": 9911363,
+      "name": "Broken Object Level Authorization",
+      "description": "Users access or manipulate data objects without proper authorization."
+    },
+    {
+      "id": 9911364,
+      "name": "Access Control",
+      "description": "Restricting resources and actions users can access based on roles, permissions, or attributes."
+    },
+    {
+      "id": 9911365,
+      "name": "Auth Failures",
+      "description": "Authentication is weak, misconfigured, or bypassed, allowing unauthorized access."
+    },
+    {
+      "id": 9911366,
+      "name": "SQL Injection",
+      "description": "Insert malicious SQL code into input fields to test for SQL injection vulnerabilities."
+    },
+    {
+      "id": 9911367,
+      "name": "XSS Injection",
+      "description": "Inject JavaScript or HTML tags to test for cross-site scripting vulnerabilities."
+    },
+    {
+      "id": 9911368,
+      "name": "Fuzzy Input",
+      "description": "Send large or randomly generated payloads to test input validation and stability."
+    },
+    {
+      "id": 9911369,
+      "name": "Command Injection",
+      "description": "Insert shell commands into inputs to test for command execution vulnerabilities."
+    },
+    {
+      "id": 9911370,
+      "name": "JSON Injection",
+      "description": "Insert malicious or unexpected JSON structures to test parsing and validation."
+    },
+    {
+      "id": 9911371,
+      "name": "NoSQL Injection",
+      "description": "Provide NoSQL-specific malicious queries or operators to test for injection vulnerabilities."
+    },
+    {
+      "id": 9911372,
+      "name": "Other",
+      "description": "Test cases not classified under existing categories."
+    }
+  ],
+  "projectAssociations": [],
+  "moduleSettings": [
+    {
+      "id": "1517449",
+      "name": "Default module",
+      "description": "",
+      "moduleVariables": [],
+      "openApiInfo": {}
+    }
+  ]
+}
