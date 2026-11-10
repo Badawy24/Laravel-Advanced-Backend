@@ -14,6 +14,7 @@ use App\Exceptions\InactiveProductException;
 use App\Exceptions\InsufficientStockException;
 use App\Exceptions\InvalidOrderTransitionException;
 use App\Exceptions\MissingActiveReservationException;
+use App\Jobs\ExpireStockReservation;
 use App\Models\Branch;
 use App\Models\BranchInventory;
 use App\Models\InventoryMovement;
@@ -23,6 +24,7 @@ use App\Models\OrderStatusHistory;
 use App\Models\Product;
 use App\Models\StockReservation;
 use App\Models\User;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\UniqueConstraintViolationException;
@@ -70,7 +72,11 @@ class OrderService
         sort($productIds);
 
         try {
-            return DB::transaction(function () use ($user, $customer, $branch, $items, $productIds, $idempotencyKey): array {
+            $createdReservations = [];
+
+            $result = DB::transaction(function () use ($user, $customer, $branch, $items, $productIds, $idempotencyKey, &$createdReservations): array {
+                $createdReservations = [];
+
                 /** @var Collection<int, BranchInventory> $inventories */
                 $inventories = BranchInventory::where('branch_id', $branch->id)
                     ->whereIn('product_id', $productIds)
@@ -175,6 +181,8 @@ class OrderService
                         'reference_id' => $reservation->id,
                         'note' => 'Order stock reservation',
                     ]);
+
+                    $createdReservations[] = $reservation;
                 }
 
                 OrderStatusHistory::create([
@@ -189,6 +197,14 @@ class OrderService
 
                 return ['order' => $order, 'is_new' => true];
             }, 3);
+
+            foreach ($createdReservations as $reservation) {
+                ExpireStockReservation::dispatch($reservation->id)
+                    ->delay($reservation->expires_at)
+                    ->afterCommit();
+            }
+
+            return $result;
         } catch (UniqueConstraintViolationException|QueryException $e) {
             if ($idempotencyKey !== null && trim($idempotencyKey) !== '') {
                 $existingOrder = Order::where('customer_id', $customer->id)
@@ -345,25 +361,15 @@ class OrderService
                             throw new BranchInventoryNotFoundException;
                         }
 
-                        $inventory->reserved_quantity -= $reservation->quantity;
-                        $inventory->save();
-
-                        $reservation->status = StockReservationStatus::Released;
-                        $reservation->resolved_at = $resolvedAt;
-                        $reservation->save();
-
-                        InventoryMovement::create([
-                            'branch_inventory_id' => $inventory->id,
-                            'user_id' => $changedById,
-                            'reason' => InventoryMovementReason::Release,
-                            'quantity_delta' => 0,
-                            'reserved_delta' => -$reservation->quantity,
-                            'quantity_after' => $inventory->quantity,
-                            'reserved_after' => $inventory->reserved_quantity,
-                            'reference_type' => $reservation->getMorphClass(),
-                            'reference_id' => $reservation->id,
-                            'note' => $note ?? 'Order cancellation stock release',
-                        ]);
+                        $this->releaseReservationStock(
+                            reservation: $reservation,
+                            inventory: $inventory,
+                            targetStatus: StockReservationStatus::Released,
+                            movementReason: InventoryMovementReason::Release,
+                            resolvedAt: $resolvedAt,
+                            userId: $changedById,
+                            note: $note ?? 'Order cancellation stock release'
+                        );
                     }
                 }
             }
@@ -381,6 +387,105 @@ class OrderService
 
             return $lockedOrder;
         }, 3);
+    }
+
+    /**
+     * Expire an eligible stock reservation and atomically release its reserved stock.
+     *
+     * @throws BranchInventoryNotFoundException
+     */
+    public function expireReservation(int $reservationId): bool
+    {
+        $reservation = StockReservation::with('orderItem:id,order_id')->find($reservationId);
+
+        if ($reservation === null || $reservation->orderItem === null) {
+            return false;
+        }
+
+        $orderId = (int) $reservation->orderItem->order_id;
+
+        return DB::transaction(function () use ($reservationId, $orderId): bool {
+            /** @var Order|null $lockedOrder */
+            $lockedOrder = Order::whereKey($orderId)
+                ->lockForUpdate()
+                ->first();
+
+            /** @var StockReservation|null $lockedReservation */
+            $lockedReservation = StockReservation::whereKey($reservationId)
+                ->lockForUpdate()
+                ->first();
+
+            if ($lockedReservation === null) {
+                return false;
+            }
+
+            /** @var BranchInventory|null $inventory */
+            $inventory = BranchInventory::whereKey($lockedReservation->branch_inventory_id)
+                ->lockForUpdate()
+                ->first();
+
+            if ($lockedOrder === null || $lockedOrder->status !== OrderStatus::Pending) {
+                return false;
+            }
+
+            if (
+                $lockedReservation->status !== StockReservationStatus::Active
+                || $lockedReservation->resolved_at !== null
+                || $lockedReservation->expires_at === null
+                || $lockedReservation->expires_at->gt(now())
+            ) {
+                return false;
+            }
+
+            if ($inventory === null) {
+                throw new BranchInventoryNotFoundException;
+            }
+
+            $this->releaseReservationStock(
+                reservation: $lockedReservation,
+                inventory: $inventory,
+                targetStatus: StockReservationStatus::Expired,
+                movementReason: InventoryMovementReason::Expire,
+                resolvedAt: now(),
+                userId: null,
+                note: 'Stock reservation expired'
+            );
+
+            return true;
+        }, 3);
+    }
+
+    /**
+     * Release reserved stock for a locked reservation and locked inventory, and record the movement.
+     */
+    protected function releaseReservationStock(
+        StockReservation $reservation,
+        BranchInventory $inventory,
+        StockReservationStatus $targetStatus,
+        InventoryMovementReason $movementReason,
+        CarbonInterface $resolvedAt,
+        ?int $userId = null,
+        ?string $note = null
+    ): void {
+        $inventory->reserved_quantity -= $reservation->quantity;
+        $inventory->save();
+
+        $reservation->status = $targetStatus;
+        $reservation->resolved_at = $resolvedAt;
+        $reservation->save();
+
+        InventoryMovement::create([
+            'branch_inventory_id' => $inventory->id,
+            'user_id' => $userId,
+            'reason' => $movementReason,
+            'quantity_delta' => 0,
+            'reserved_delta' => -$reservation->quantity,
+            'quantity_after' => $inventory->quantity,
+            'reserved_after' => $inventory->reserved_quantity,
+            'reference_type' => $reservation->getMorphClass(),
+            'reference_id' => $reservation->id,
+            'note' => $note,
+        ]);
     }
 
     /**
