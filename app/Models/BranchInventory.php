@@ -68,3 +68,4 @@ class BranchInventory extends Model
         return $this->hasMany(InventoryMovement::class);
     }
 }
+

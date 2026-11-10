@@ -62,3 +62,4 @@ class OrderItem extends Model
         return $this->hasOne(StockReservation::class);
     }
 }
+

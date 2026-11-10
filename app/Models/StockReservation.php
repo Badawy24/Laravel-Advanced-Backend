@@ -56,3 +56,4 @@ class StockReservation extends Model
         return $this->belongsTo(BranchInventory::class);
     }
 }
+
